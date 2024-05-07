@@ -1,17 +1,16 @@
-function rotateRight(head, k) {
-  if (!head || k === 0) return head;
-  let length = 1;
-  let tail = head;
-  while (tail.next) {
-    length++;
-    tail = tail.next;
+function minPathSum(grid) {
+  const rows = grid.length;
+  const cols = grid[0].length;
+  for (let i = 1; i < rows; i++) {
+    grid[i][0] += grid[i - 1][0];
   }
-  k = k % length;
-  if (k === 0) return head;
-  let newTail = head;
-  for (let i = 1; i < length - k; i++) newTail = newTail.next;
-  const newHead = newTail.next;
-  newTail.next = null;
-  tail.next = head;
-  return newHead;
+  for (let j = 1; j < cols; j++) {
+    grid[0][j] += grid[0][j - 1];
+  }
+  for (let i = 1; i < rows; i++) {
+    for (let j = 1; j < cols; j++) {
+      grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
+    }
+  }
+  return grid[rows - 1][cols - 1];
 }
