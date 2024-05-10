@@ -1,14 +1,22 @@
-function wordBreak(s, wordDict) {
-  const set = new Set(wordDict);
-  const dp = new Array(s.length + 1).fill(false);
-  dp[0] = true;
-  for (let end = 1; end <= s.length; end++) {
-    for (let start = 0; start < end; start++) {
-      if (dp[start] && set.has(s.substring(start, end))) {
-        dp[end] = true;
-        break;
-      }
+function permuteUnique(nums) {
+  nums.sort((a, b) => a - b);
+  const result = [];
+  const used = new Array(nums.length).fill(false);
+  backtrack([]);
+  return result;
+  function backtrack(permutation) {
+    if (permutation.length === nums.length) {
+      result.push([...permutation]);
+      return;
+    }
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]))
+        continue;
+      used[i] = true;
+      permutation.push(nums[i]);
+      backtrack(permutation);
+      permutation.pop();
+      used[i] = false;
     }
   }
-  return dp[s.length];
 }
